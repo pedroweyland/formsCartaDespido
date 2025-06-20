@@ -1,10 +1,10 @@
 package com.forms.cartadespido;
 
 import com.forms.cartadespido.form.FillForms;
-import com.forms.cartadespido.model.entity.Amount;
-import com.forms.cartadespido.model.entity.Details;
-import com.forms.cartadespido.model.entity.Quotes;
-import com.forms.cartadespido.model.entity.Worker;
+import com.forms.cartadespido.model.Amount;
+import com.forms.cartadespido.model.Details;
+import com.forms.cartadespido.model.Quotes;
+import com.forms.cartadespido.model.Worker;
 import com.forms.cartadespido.repository.CsvMappers;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,8 +12,7 @@ import java.util.List;
 
 import static com.forms.cartadespido.repository.CsvReader.readCsv;
 
-public class App 
-{
+public class App {
 
     public static void main( String[] args ) {
         CsvMappers csvMappers = new CsvMappers();

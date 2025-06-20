@@ -1,4 +1,4 @@
-package com.forms.cartadespido.model.entity;
+package com.forms.cartadespido.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

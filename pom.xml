@@ -31,6 +31,13 @@
       <version>3.141.59</version>
     </dependency>
 
+    <!-- ENV -->
+    <dependency>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>dotenv-java</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
     <!-- OpenCSV -->
     <dependency>
       <groupId>com.opencsv</groupId>

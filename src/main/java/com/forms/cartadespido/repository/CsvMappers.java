@@ -1,9 +1,9 @@
 package com.forms.cartadespido.repository;
 
-import com.forms.cartadespido.model.entity.Amount;
-import com.forms.cartadespido.model.entity.Details;
-import com.forms.cartadespido.model.entity.Quotes;
-import com.forms.cartadespido.model.entity.Worker;
+import com.forms.cartadespido.model.Amount;
+import com.forms.cartadespido.model.Details;
+import com.forms.cartadespido.model.Quotes;
+import com.forms.cartadespido.model.Worker;
 
 public class CsvMappers {
 

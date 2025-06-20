@@ -1,6 +1,10 @@
 package com.forms.cartadespido.form;
 
-import com.forms.cartadespido.model.entity.*;
+import com.forms.cartadespido.model.Amount;
+import com.forms.cartadespido.model.Details;
+import com.forms.cartadespido.model.Quotes;
+import com.forms.cartadespido.model.Worker;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,12 +15,18 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FillForms {
 
-    final String url = "https://tramites.dirtrab.cl/registroempresa/Cartas/CartasInd?Rut=NzY4ODE2NTAtNg%3D%3D&Razon=QUxURVJOQVRUSVZBIEVNUFJFU0EgREUgU0VSVklDSU9TIFRSQU5TSVRPUklPUyBMSU1JVEFEQQ%3D%3D&RutTrab=0&token=7bcd43ec-ed41-4aa3-8c07-9e0e35cb3a5c";
+    private static final Dotenv dotenv = Dotenv.load();
+
+    final String url = dotenv.get("URL");
 
     public void fillForm(Worker worker, Details detail, Amount amount, Quotes quote) {
+        Logger.getLogger("org.openqa.selenium.devtools").setLevel(Level.OFF);
+        Logger.getLogger("org.openqa.selenium.chromium.ChromiumDriver").setLevel(Level.OFF);
 
         System.setProperty("webdriver.chrome.driver", "C:\\webdrivers\\chromedriver.exe");
 
@@ -37,7 +47,7 @@ public class FillForms {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         } finally {
-            safeSleep(3);
+            safeSleep(2);
             driver.quit();
         }
     }

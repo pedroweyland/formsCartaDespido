@@ -1,4 +1,4 @@
-package com.forms.cartadespido.model.entity;
+package com.forms.cartadespido.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Amount {
+public class Quotes {
     private Long RutTrab;
-    private Long AnoSer;
-    private Long Aviso;
+    private String Prev;
+    private Integer Doc;
 }
