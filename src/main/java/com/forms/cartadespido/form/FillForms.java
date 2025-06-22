@@ -4,36 +4,22 @@ import com.forms.cartadespido.model.Amount;
 import com.forms.cartadespido.model.Details;
 import com.forms.cartadespido.model.Quotes;
 import com.forms.cartadespido.model.Worker;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static com.forms.cartadespido.form.InputsUtils.*;
 
 public class FillForms {
 
-    private static final Dotenv dotenv = Dotenv.load();
+    public void fillForm(Worker worker, Details detail, Amount amount, Quotes quote, WebDriver driver) {
 
-    final String url = dotenv.get("URL");
-
-    public void fillForm(Worker worker, Details detail, Amount amount, Quotes quote) {
-        Logger.getLogger("org.openqa.selenium.devtools").setLevel(Level.OFF);
-        Logger.getLogger("org.openqa.selenium.chromium.ChromiumDriver").setLevel(Level.OFF);
-
-        System.setProperty("webdriver.chrome.driver", "C:\\webdrivers\\chromedriver.exe");
-
-        WebDriver driver = new ChromeDriver();
-
-        driver.get(url);
-        driver.manage().window().maximize();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         try {
@@ -48,31 +34,23 @@ public class FillForms {
             System.out.println("Error: " + e.getMessage());
         } finally {
             safeSleep(2);
-            driver.quit();
         }
     }
 
     private void fillFormWorkers(Worker worker, WebDriverWait wait) {
-        WebElement rutInput, nameInput, lastNamePatInput, lastNameMatInput, domicilioInput, sexoRadio, submitButton;
-        Select comunaInput, nacionalidadInput;
+        WebElement sexoRadio, submitButton;
 
-        rutInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("RutTrab")));
-        rutInput.sendKeys(worker.getRutTrab().toString());
+        rellenarFormularioByName(wait, "RutTrab", worker.getRutTrab().toString());
 
-        nameInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("Nom")));
-        nameInput.sendKeys(worker.getNom());
+        rellenarFormularioByName(wait, "Nom", worker.getNom());
 
-        lastNamePatInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("ApePat")));
-        lastNamePatInput.sendKeys(worker.getApePat());
+        rellenarFormularioByName(wait, "ApePat", worker.getApePat());
 
-        lastNameMatInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("ApeMat")));
-        lastNameMatInput.sendKeys(worker.getApeMat());
+        rellenarFormularioByName(wait, "ApeMat", worker.getApeMat());
 
-        domicilioInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("SelDom")));
-        domicilioInput.sendKeys(worker.getSelDom());
+        rellenarFormularioByName(wait, "SelDom", worker.getSelDom());
 
-        comunaInput = new Select(wait.until(ExpectedConditions.elementToBeClickable(By.name("CodCom"))));
-        comunaInput.selectByValue(worker.getCodCom().toString());
+        rellenarSelectByName(wait, "CodCom", worker.getCodCom().toString());
 
         String sexoValue = String.valueOf(worker.getSex()); // 1 = Masculino, 2 = Femenino
         sexoRadio = wait.until(ExpectedConditions.elementToBeClickable(
@@ -80,15 +58,14 @@ public class FillForms {
         ));
         sexoRadio.click();
 
-        nacionalidadInput = new Select(wait.until(ExpectedConditions.elementToBeClickable(By.name("nac"))));
-        nacionalidadInput.selectByValue(worker.getNac().toString());
+        rellenarSelectByName(wait, "nac", worker.getNac().toString());
 
         submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.className("Siguiente")));
         submitButton.click();
     }
 
     private void fillFormDetails(Details detail, WebDriverWait wait, WebDriver driver) {
-        WebElement formaRadio, fechaInicioInput, fechaTerminoInput, fechaComisionInput, motivoInput;
+        WebElement formaRadio, fechaInicioInput, fechaTerminoInput, fechaComisionInput;
         Select causalInput;
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -110,38 +87,26 @@ public class FillForms {
         causalInput = new Select(wait.until(ExpectedConditions.elementToBeClickable(By.name("Causal"))));
         causalInput.selectByVisibleText(detail.getCausal());
 
-        motivoInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("Motivo")));
-        motivoInput.sendKeys(detail.getMotivo());
+        rellenarFormularioByName(wait, "Motivo", detail.getMotivo());
+
     }
 
     private void fillFormAmount(Amount amount, WebDriverWait wait) {
-        WebElement anoSerInput, avisoInput;
 
-        anoSerInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("AnoSer")));
-        anoSerInput.sendKeys(amount.getAnoSer().toString());
+        rellenarFormularioByName(wait, "AnoSer", amount.getAnoSer().toString());
 
-        avisoInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("Aviso")));
-        avisoInput.sendKeys(amount.getAviso().toString());
+        rellenarFormularioByName(wait, "Aviso", amount.getAviso().toString());
     }
 
     private void fillFormQuotes(Quotes quote, WebDriverWait wait) {
-        WebElement prevInput, docInput;
 
-        prevInput = wait.until(ExpectedConditions.elementToBeClickable(By.name("Prev")));
-        prevInput.sendKeys(quote.getPrev());
+        rellenarFormularioByName(wait, "Prev", quote.getPrev());
 
         String docValue = String.valueOf(quote.getDoc());
-        docInput = wait.until(ExpectedConditions.elementToBeClickable(
+        WebElement docInput = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//input[@name='Doc' and @value='" + docValue + "']")
         ));
         docInput.click();
     }
 
-    private void safeSleep(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }
