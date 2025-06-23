@@ -1,10 +1,10 @@
-RutTrab,Nom,ApePat,ApeMat,SelDom,CodCom,Sex,nac
-132323380,juan,perez,gonzalez,los laureles 123,13120,1,301
-274127902,maria,rojas,fernandez,av. brasil 456,13120,2,301
-150116511,roberto,fuentes,navarro,calle falsa 123,13120,1,301
-286604110,camila,muñoz,salinas,av. libertad 202,13120,2,301
-251952469,andres,castro,espinoza,pasaje el sol 9,13120,1,301
-326898279,valentina,leiva,villalobos,camino real 888,13120,2,301
-131426852,tomás,araya,flores,plaza sur 100,13120,1,301
-340620135,lucía,morales,alvarado,manuel rodríguez 67,13120,2,301
-370080410,nicolás,venegas,martínez,los robles 45,13120,1,301
+RutTrab,RutEmpleador,Nom,ApePat,ApeMat,SelDom,CodCom,Sex,nac
+132323380,768816506,juan,perez,gonzalez,los laureles 123,13120,1,301
+274127902,797770108,maria,rojas,fernandez,av. brasil 456,13120,2,301
+150116511,768816506,roberto,fuentes,navarro,calle falsa 123,13120,1,301
+286604110,768816506,camila,muñoz,salinas,av. libertad 202,13120,2,301
+251952469,797770108,andres,castro,espinoza,pasaje el sol 9,13120,1,301
+326898279,797770108,valentina,leiva,villalobos,camino real 888,13120,2,301
+131426852,768816506,tomás,araya,flores,plaza sur 100,13120,1,301
+340620135,797770108,lucía,morales,alvarado,manuel rodríguez 67,13120,2,301
+370080410,768816506,nicolás,venegas,martínez,los robles 45,13120,1,301

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Worker {
 
     private Long RutTrab;
+    private Long RutEmpleador;
     private String Nom;
     private String ApePat;
     private String ApeMat;
@@ -19,5 +20,4 @@ public class Worker {
     private Integer CodCom;
     private Integer Sex;
     private Integer Nac;
-    private Details details;
 }

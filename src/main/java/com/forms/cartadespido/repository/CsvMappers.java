@@ -10,13 +10,14 @@ public class CsvMappers {
     public Worker mapToWorker(String[] row) {
         return Worker.builder()
                 .RutTrab(Long.parseLong(row[0]))
-                .Nom(row[1])
-                .ApePat(row[2])
-                .ApeMat(row[3])
-                .SelDom(row[4])
-                .CodCom(Integer.parseInt(row[5]))
-                .Sex(Integer.parseInt(row[6]))
-                .Nac(Integer.parseInt(row[7]))
+                .RutEmpleador(Long.parseLong(row[1]))
+                .Nom(row[2])
+                .ApePat(row[3])
+                .ApeMat(row[4])
+                .SelDom(row[5])
+                .CodCom(Integer.parseInt(row[6]))
+                .Sex(Integer.parseInt(row[7]))
+                .Nac(Integer.parseInt(row[8]))
                 .build();
     }
 

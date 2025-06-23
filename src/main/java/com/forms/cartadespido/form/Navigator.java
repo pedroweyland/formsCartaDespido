@@ -23,7 +23,7 @@ public class Navigator {
     final String rut = dotenv.get("RUT");
     final String password = dotenv.get("PASSWORD");
 
-    public WebDriver navToForms(){
+    public WebDriver loginForm(){
         Logger.getLogger("org.openqa.selenium.devtools").setLevel(Level.OFF);
         Logger.getLogger("org.openqa.selenium.chromium.ChromiumDriver").setLevel(Level.OFF);
         System.setProperty("webdriver.chrome.driver", "C:\\webdrivers\\chromedriver.exe");
@@ -39,14 +39,6 @@ public class Navigator {
             login(wait);
             safeSleep(1);
 
-            empleadorNav(wait);
-            safeSleep(1);
-
-            cartaNav(wait);
-            safeSleep(1);
-
-            cartaAviso(driver, wait);
-
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
@@ -57,25 +49,55 @@ public class Navigator {
 
     }
 
-    private void cartaAviso(WebDriver driver, WebDriverWait wait) {
-        // Guardamos el handle de la pestaña actual
-        String originalTab = driver.getWindowHandle();
+    public WebDriver navToForm(WebDriver driver, Long rutEmpleador) {
 
-        // Esperamos a que haya más de una pestaña abierta
-        wait.until(driver1 -> driver1.getWindowHandles().size() > 1);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        // Iteramos sobre los handles abiertos y cambiamos al nuevo (que no es el original)
-        for (String windowHandle : driver.getWindowHandles()) {
-            if (!windowHandle.equals(originalTab)) {
-                driver.switchTo().window(windowHandle);
-                break;
-            }
+        try {
+
+            empleadorNav(wait, rutEmpleador);
+            safeSleep(1);
+
+            cartaNav(wait);
+            safeSleep(1);
+
+            driver = cartaAviso(driver, wait);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            safeSleep(2);
         }
 
-        WebElement cartaAvisoBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("a.CA"))
-        );
-        cartaAvisoBtn.click();
+        return driver;
+    }
+
+    private void empleadorNav(WebDriverWait wait, Long rutEmpleador) {
+        WebElement empleadorPersonaButtom, empleadorButtom, empresaButton;
+
+        empleadorButtom = wait.until(ExpectedConditions.elementToBeClickable(By.id("btn-empleador")));
+        empleadorButtom.click();
+
+        empleadorPersonaButtom = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//div[@class='title accordion-title' and contains(., 'Empleador Persona Jurídica')]")
+        ));
+        empleadorPersonaButtom.click();
+
+        if (rutEmpleador == 768816506) {
+            empresaButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[@class='ui basic button' and contains(.,'76881650-6 ALTERNATTIVA EMPRESA DE SERVICIOS TRANSITORIOS LIMITADA')]")
+            ));
+            empresaButton.click();
+        } else if (rutEmpleador == 797770108) {
+            empresaButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//button[@class='ui basic button' and contains(.,'79777010-8 MARKETING Y PROMOCIONES S.A.')]")
+            ));
+            empresaButton.click();
+        } else {
+            throw new IllegalArgumentException("Rut Empleador no reconocido");
+        }
+
     }
 
     private void cartaNav(WebDriverWait wait) {
@@ -93,21 +115,29 @@ public class Navigator {
         cartaDespidoButtom.click();
     }
 
-    private void empleadorNav(WebDriverWait wait) {
-        WebElement empleadorPersonaButtom, empleadorButtom, empresaButton;
+    private WebDriver cartaAviso(WebDriver driver, WebDriverWait wait) {
 
-        empleadorButtom = wait.until(ExpectedConditions.elementToBeClickable(By.id("btn-empleador")));
-        empleadorButtom.click();
+        driver = switchToNewTabAndCloseOld(driver, wait);
 
-        empleadorPersonaButtom = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//div[@class='title accordion-title' and contains(., 'Empleador Persona Jurídica')]")
-        ));
-        empleadorPersonaButtom.click();
+        WebElement cartaAvisoBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a.CA"))
+        );
+        cartaAvisoBtn.click();
 
-        empresaButton = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[@class='ui basic button' and contains(.,'76881650-6 ALTERNATTIVA EMPRESA DE SERVICIOS TRANSITORIOS LIMITADA')]")
-        ));
-        empresaButton.click();
+        return driver;
+    }
+
+    private WebDriver switchToNewTabAndCloseOld(WebDriver driver, WebDriverWait wait) {
+        String originalTab = driver.getWindowHandle();
+        wait.until(d -> d.getWindowHandles().size() > 1);
+
+        String newTab = driver.getWindowHandles().stream()
+                .filter(handle -> !handle.equals(originalTab))
+                .findFirst().orElseThrow(() -> new RuntimeException("No se encontró nueva pestaña"));
+
+        driver.switchTo().window(originalTab).close();
+        driver.switchTo().window(newTab);
+        return driver;
     }
 
     private void login(WebDriverWait wait) {

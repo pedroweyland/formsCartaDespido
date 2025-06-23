@@ -21,17 +21,24 @@ public class App {
         FillForms fillForms = new FillForms();
         Navigator navigator = new Navigator();
 
+        WebDriver driver;
+        boolean esPrimerTrabajador = true;
+
         List<Worker> workers = readCsv("src/main/resources/FakeDataWorkers.csv", csvMappers::mapToWorker);
         List<Details> details = readCsv("src/main/resources/FakeDataDetails.csv", csvMappers::mapToDetails);
         List<Amount> amounts = readCsv("src/main/resources/FakeDataAmount.csv", csvMappers::mapToAmount);
         List<Quotes> quotes = readCsv("src/main/resources/FakeDataQuotes.csv", csvMappers::mapToQuotes);
 
-        WebDriver driver = navigator.navToForms();
+        driver = navigator.loginForm();
 
         String currentUrl = driver.getCurrentUrl();
 
         for (Worker worker : workers) {
-            System.out.println("Processing worker: " + worker.getNom() + " - RUN: " + worker.getRutTrab());
+            System.out.println("Processing worker: " + worker.getNom() + " - RUN: " + worker.getRutTrab() + " - RUN EMPLEADOR: " + worker.getRutEmpleador());
+
+            if (!esPrimerTrabajador) driver.navigate().to(currentUrl);
+
+            driver = navigator.navToForm(driver, worker.getRutEmpleador());
 
             Details detail = getDetail(worker, details);
             Amount amount = getAmount(worker, amounts);
@@ -39,11 +46,11 @@ public class App {
 
             if (detail != null && amount != null && quote != null) {
                 fillForms.fillForm(worker, detail, amount, quote, driver);
-                driver.navigate().to(currentUrl);
             } else {
                 System.out.println("Missing data for worker: " + worker.getNom() + " - RUN: " + worker.getRutTrab());
             }
 
+            esPrimerTrabajador = false;
         }
 
         driver.quit();

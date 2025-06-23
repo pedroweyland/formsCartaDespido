@@ -55,13 +55,14 @@ public class CsvReader {
 
                 Worker worker = Worker.builder()
                         .RutTrab(Long.parseLong(fila[0]))
-                        .Nom(fila[1])
-                        .ApePat(fila[2])
-                        .ApeMat(fila[3])
-                        .SelDom(fila[4])
-                        .CodCom(Integer.parseInt(fila[5]))
-                        .Sex(Integer.parseInt(fila[6]))
-                        .Nac(Integer.parseInt(fila[7]))
+                        .RutEmpleador(Long.parseLong(fila[1]))
+                        .Nom(fila[2])
+                        .ApePat(fila[3])
+                        .ApeMat(fila[4])
+                        .SelDom(fila[5])
+                        .CodCom(Integer.parseInt(fila[6]))
+                        .Sex(Integer.parseInt(fila[7]))
+                        .Nac(Integer.parseInt(fila[8]))
                         .build();
 
                 workers.add(worker);
